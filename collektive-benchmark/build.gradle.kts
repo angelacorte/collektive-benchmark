@@ -1,4 +1,3 @@
-import java.awt.GraphicsEnvironment
 import java.io.ByteArrayOutputStream
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Locale
@@ -20,9 +19,6 @@ dependencies {
     implementation(libs.bundles.collektive)
     implementation(libs.bundles.protelis)
     implementation(libs.scala)
-    if (!GraphicsEnvironment.isHeadless()) {
-        implementation(libs.alchemist.swingui)
-    }
 }
 
 // Heap size estimation for batches
@@ -44,17 +40,12 @@ val taskSizeFromProject: Int? by project
 val taskSize = taskSizeFromProject ?: 512
 val threadCount = maxOf(1, minOf(Runtime.getRuntime().availableProcessors(), heap.toInt() / taskSize))
 
-val runAllGraphic by tasks.register<DefaultTask>("runAllGraphic") {
-    group = alchemistGroup
-    description = "Launches all simulations with the graphic subsystem enabled"
-}
 val runAllBatch by tasks.register<DefaultTask>("runAllBatch") {
     group = alchemistGroup
     description = "Launches all experiments"
 }
 
 val alchemistGroup = "Run Alchemist"
-
 fun String.capitalizeString(): String =
     this.replaceFirstChar {
         if (it.isLowerCase()) {
@@ -66,7 +57,6 @@ fun String.capitalizeString(): String =
         }
     }
 
-// todo this doesn't work because I changed the directory structure
 val incarnations = listOf("collektive", "protelis", "scafi")
 incarnations.forEach { incarnation ->
     File(rootProject.rootDir.path + "/src/main/resources/yaml/${incarnation}").listFiles()
@@ -86,15 +76,6 @@ incarnations.forEach { incarnation ->
                 }
             }
             val capitalizedName = (incarnation + it.nameWithoutExtension.capitalizeString()).capitalizeString()
-            val graphic by basetask("run${capitalizedName}Graphic") {
-                args(
-                    "--override",
-                    "monitors: { type: SwingGUI, parameters: { graphics: effects/${incarnation}/${it.nameWithoutExtension}.json } }",
-                    "--override",
-                    "launcher: { parameters: { batch: [], autoStart: false } }",
-                )
-            }
-            runAllGraphic.dependsOn(graphic)
             val batch by basetask("run${capitalizedName}Batch") {
                 description = "Launches batch experiments for $capitalizedName"
                 maxHeapSize = "${minOf(heap.toInt(), Runtime.getRuntime().availableProcessors() * taskSize)}m"
