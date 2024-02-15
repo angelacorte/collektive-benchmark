@@ -13,7 +13,7 @@ val checkPoints = 1000
 
 fun main() {
 
-    listOf("collektive", "scafi").map { it to loadYamlSimulation<Any?, Euclidean2DPosition>("yaml/$it/gradient.yml")}
+    listOf("collektive", "scafi", "protelis").map { it to loadYamlSimulation<Any?, Euclidean2DPosition>("yaml/$it/gradient.yml")}
         .forEach { (experiment, simulation) ->
             simulation.environment.addTerminator(AfterTime(DoubleTime(10_000.0)))
             Thread.sleep(1000)
@@ -28,7 +28,7 @@ fun main() {
                 ) {
                     val time = simulation.time.toDouble()
                     if (time > nextCheckPoint) {
-                        println("Simulation at $time after ${System.currentTimeMillis() - startTime}ms, performed $step steps")
+                        println("$experiment gradient Simulation at $time after ${System.currentTimeMillis() - startTime}ms, performed $step steps")
                         nextCheckPoint += checkPoints
                     }
                 }
