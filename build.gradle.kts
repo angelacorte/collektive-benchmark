@@ -19,6 +19,8 @@ dependencies {
     implementation(libs.bundles.collektive)
     implementation(libs.bundles.protelis)
     implementation(libs.scala)
+    implementation(kotlin("reflect"))
+    implementation(libs.caffeine)
 }
 
 // Heap size estimation for batches
@@ -100,10 +102,10 @@ tasks.withType(KotlinCompile::class).all {
 }
 
 tasks.register<JavaExec>("runBenchmark"){
-    group = alchemistGroup
-    description = "Launches benchmarks for Collektive, ScaFi and Protelis on Alchemist simulator"
+    group = "Run Benchmark"
+    description = "Launches benchmarks for Collektive, ScaFi and Protelis"
     mainClass.set("it.unibo.alchemist.Alchemist")
     classpath = sourceSets["main"].runtimeClasspath
-    val file = File(rootProject.rootDir.path + "/src/main/kotlin/Main.Kt")
+    val file = File("${rootProject.rootDir.path}/src/main/kotlin/it/unibo/benchmark/Benchmark.kt")
     args("run", file.absolutePath)
 }
