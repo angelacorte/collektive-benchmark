@@ -23,7 +23,7 @@ scala = { module = "org.scala-lang:scala-library", version.ref = "scala"}
 [bundles]
 alchemist = ["alchemist", "alchemist-euclidean-geometry", "alchemist-incarnation-protelis", "alchemist-incarnation-scafi", "alchemist-swingui", "alchemist-test"]
 collektive = ["collektive", "collektive-incarnation"]
-protelis = [ "protelis-interpreter", "protelis-lang" ]
+protelis = [ "protelis", "protelis-interpreter", "protelis-lang" ]
 
 [plugins]
 multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:0.5.8"
