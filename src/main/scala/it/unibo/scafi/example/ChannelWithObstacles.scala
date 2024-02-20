@@ -14,5 +14,3 @@ class ChannelWithObstacles extends AggregateProgram with StandardSensors with Bl
     inChannel
   }
 }
-
-//val program = new ChannelWithObstacles
