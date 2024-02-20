@@ -39,13 +39,15 @@ val heap: Long = maxHeap ?: if (System.getProperty("os.name").lowercase().contai
 val taskSizeFromProject: Int? by project
 val taskSize = taskSizeFromProject ?: 512
 val threadCount = maxOf(1, minOf(Runtime.getRuntime().availableProcessors(), heap.toInt() / taskSize))
-
 val runAllBatch by tasks.register<DefaultTask>("runAllBatch") {
-    group = alchemistGroup
+    group = "Run Batch"
     description = "Launches all experiments"
 }
+val runAllGraphic by tasks.register<DefaultTask>("runAllGraphic") {
+    group = "Run Alchemist"
+    description = "Launches all simulations with the graphic subsystem enabled"
+}
 
-val alchemistGroup = "Run Alchemist"
 fun String.capitalizeString(): String =
     this.replaceFirstChar {
         if (it.isLowerCase()) {
@@ -64,7 +66,6 @@ incarnations.forEach { incarnation ->
         ?.sortedBy { it.nameWithoutExtension }
         ?.forEach {
             fun basetask(name: String, additionalConfiguration: JavaExec.() -> Unit = {}) = tasks.register<JavaExec>(name) {
-                group = alchemistGroup
                 description = "Launches graphic simulation ${it.nameWithoutExtension} with Collektive incarnation"
                 mainClass.set("it.unibo.alchemist.Alchemist")
                 classpath = sourceSets["main"].runtimeClasspath
@@ -76,7 +77,16 @@ incarnations.forEach { incarnation ->
                 }
             }
             val capitalizedName = (incarnation + it.nameWithoutExtension.capitalizeString()).capitalizeString()
-            val batch by basetask("run${capitalizedName}Batch") {
+            val graphic by basetask("run${capitalizedName}Graphic") {
+                args(
+                    "--override",
+                    "monitors: { type: SwingGUI, parameters: { graphics: effects/${it.nameWithoutExtension}.json } }",
+                    "--override",
+                    "launcher: { parameters: { batch: [], autoStart: false } }",
+                )
+            }
+            runAllGraphic.dependsOn(graphic)
+            val batch by basetask("run${capitalizedName}") {
                 description = "Launches batch experiments for $capitalizedName"
                 maxHeapSize = "${minOf(heap.toInt(), Runtime.getRuntime().availableProcessors() * taskSize)}m"
                 File("data").mkdirs()
