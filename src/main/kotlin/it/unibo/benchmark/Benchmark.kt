@@ -29,7 +29,8 @@ fun main() {
     val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
     val startedAt = LocalDateTime.now().format(formatter)
     val store: MutableMap<SimulationType, Results> = mutableMapOf()
-    listOf("fieldEvolution", "neighborCounter", "gradient").forEach { testType ->  //"channelWithObstacles", "branching"
+
+    listOf("fieldEvolution", "neighborCounter", "branching", "gradient").forEach { testType ->
         for (i in 1 .. 3) { //16
             incarnations.map { it to loadYamlSimulation<Any?, Euclidean2DPosition>("yaml/$it/$testType.yml")}
                 .forEach { (experiment, simulation) ->
