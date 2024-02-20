@@ -9,15 +9,17 @@ _pool: &program
     type: Event
     actions:
       - type: RunCollektiveProgram
-        parameters: [it.unibo.collektive.examples.branching.BranchingKt.branchingEntrypoint]
+        parameters: [it.unibo.collektive.examples.branching.BranchingKt.branching]
 
 deployments:
   - type: Rectangle
-    parameters: [200, 0, 0, 20, 20]
+    parameters: [198, 0, 0, 20, 20]
     programs:
       - *program
     contents:
       - molecule: source
+        concentration: false
+      - molecule: sensor
         concentration: false
   - type: Point
     parameters: [2, 2]
@@ -26,10 +28,14 @@ deployments:
     contents:
       - molecule: source
         concentration: true
+      - molecule: sensor
+        concentration: false
   - type: Point
     parameters: [4, 4]
     programs:
       - *program
     contents:
-    - molecule: sensor
-      concentration: true
+      - molecule: sensor
+        concentration: true
+      - molecule: source
+        concentration: false
