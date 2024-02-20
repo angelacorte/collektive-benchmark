@@ -20,7 +20,6 @@ protelis-lang = { module = "org.protelis:protelis-lang", version.ref = "protelis
 scala = { module = "org.scala-lang:scala-library", version.ref = "scala"}
 caffeine = "com.github.ben-manes.caffeine:caffeine:3.1.8"
 
-
 [bundles]
 alchemist = ["alchemist", "alchemist-euclidean-geometry", "alchemist-incarnation-protelis", "alchemist-incarnation-scafi", "alchemist-swingui", "alchemist-test"]
 collektive = ["collektive", "collektive-incarnation"]
