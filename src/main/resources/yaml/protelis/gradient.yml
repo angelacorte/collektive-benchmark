@@ -7,13 +7,14 @@ network-model:
 _gradient: &program
   - time-distribution: 1
     program: |
-        share (distance <- POSITIVE_INFINITY) {
-           mux(self.getDeviceUID().getId() == 0) {
-              0      
-           } else {
-              foldMin(POSITIVE_INFINITY, distance + self.nbrRange())
-           }
-        }
+      import protelis:coord:spreading
+      share (distance <- POSITIVE_INFINITY) {
+         mux(env.has("source")) {
+            0      
+         } else {
+            foldMin(POSITIVE_INFINITY, distance + nbrRange())
+         }
+      }
   - program: send
 
 deployments:
