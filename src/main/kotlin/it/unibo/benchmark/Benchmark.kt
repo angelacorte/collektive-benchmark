@@ -1,4 +1,4 @@
-package it.unibo
+package it.unibo.benchmark
 
 import it.unibo.alchemist.boundary.OutputMonitor
 import it.unibo.alchemist.model.Actionable
