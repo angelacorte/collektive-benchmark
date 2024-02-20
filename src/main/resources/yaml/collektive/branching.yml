@@ -9,7 +9,7 @@ _pool: &program
     type: Event
     actions:
       - type: RunCollektiveProgram
-        parameters: [it.unibo.collektive.examples.entrypoint.SimulationEntrypointKt.branchingEntrypoint]
+        parameters: [it.unibo.collektive.examples.branching.BranchingKt.branchingEntrypoint]
 
 deployments:
   - type: Rectangle
@@ -26,7 +26,10 @@ deployments:
     contents:
       - molecule: source
         concentration: true
-
-terminate:
-  type: AfterTime
-  parameters: 100
+  - type: Point
+    parameters: [4, 4]
+    programs:
+      - *program
+    contents:
+    - molecule: sensor
+      concentration: true
