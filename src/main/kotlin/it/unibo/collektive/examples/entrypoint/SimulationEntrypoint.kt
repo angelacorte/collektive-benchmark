@@ -4,7 +4,7 @@ import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.alchemist.device.DistanceSensor
 import it.unibo.collektive.examples.gradient.gradient
 import it.unibo.collektive.examples.neighbors.neighborCounter
-import it.unibo.collektive.examples.time.stateChange
+import it.unibo.collektive.examples.time.fieldEvolution
 
 /**
  * The entrypoint of the simulation running a gradient.
@@ -20,4 +20,4 @@ fun Aggregate<Int>.neighborCounterEntrypoint(): Int = neighborCounter()
 /**
  * The entrypoint of the simulation running a state change.
  */
-fun Aggregate<Int>.stateChangeEntrypoint(): Int = stateChange(localId)
+fun Aggregate<Int>.fieldEvolutionEntrypoint(): Int = fieldEvolution()
