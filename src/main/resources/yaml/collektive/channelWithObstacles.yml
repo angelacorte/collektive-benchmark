@@ -1,0 +1,58 @@
+incarnation: collektive
+
+network-model:
+  type: ConnectWithinDistance
+  parameters: [5]
+
+_pool: &program
+  - time-distribution: 1
+    type: Event
+    actions:
+      - type: RunCollektiveProgram
+        parameters: [it.unibo.collektive.examples.channel.ChannelWithObstaclesKt.channelWithObstacles]
+
+deployments:
+  - type: Rectangle
+    parameters: [197, 0, 0, 20, 20]
+    programs:
+      - *program
+    contents:
+      - molecule: obstacle
+        concentration: false
+      - molecule: source
+        concentration: false
+      - molecule: target
+        concentration: false
+  - type: Point
+    parameters: [2, 2]
+    programs:
+      - *program
+    contents:
+      - molecule: source
+        concentration: true
+      - molecule: target
+        concentration: false
+      - molecule: obstacle
+        concentration: false
+  - type: Point
+    parameters: [17, 17]
+    programs:
+      - *program
+    contents:
+      - molecule: target
+        concentration: true
+      - molecule: source
+        concentration: false
+      - molecule: obstacle
+        concentration: false
+  - type: Point
+    parameters: [ 10, 10 ]
+    programs:
+      - *program
+    contents:
+      - molecule: obstacle
+        concentration: true
+      - molecule: source
+        concentration: false
+      - molecule: target
+        concentration: false
