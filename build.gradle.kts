@@ -109,8 +109,6 @@ tasks.withType(KotlinCompile::class).all {
 tasks.register<JavaExec>("runBenchmark"){
     group = "Run Benchmark"
     description = "Launches benchmarks for Collektive, ScaFi and Protelis"
-    mainClass.set("it.unibo.alchemist.Alchemist")
+    mainClass.set("it.unibo.benchmark.BenchmarkKt")
     classpath = sourceSets["main"].runtimeClasspath
-    val file = File("${rootProject.rootDir.path}/src/main/kotlin/it/unibo/benchmark/Benchmark.kt")
-    args("run", file.absolutePath)
 }
