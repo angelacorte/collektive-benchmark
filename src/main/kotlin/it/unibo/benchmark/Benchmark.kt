@@ -8,7 +8,9 @@ import it.unibo.alchemist.model.terminators.AfterTime
 import it.unibo.alchemist.model.times.DoubleTime
 import it.unibo.alchemist.test.loadYamlSimulation
 import it.unibo.alchemist.test.startSimulation
+import java.io.BufferedWriter
 import java.io.File
+import java.io.FileWriter
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption.APPEND
@@ -36,12 +38,12 @@ fun main() {
     val tests = listOf("fieldEvolution", "neighborCounter", "branching", "gradient", "channelWithObstacles")
         .flatMap { t -> incarnations.map { i -> i to t } }
 
-    repeat(1) { i ->
+    repeat(10) { i ->
         tests.map { (incarnation, testType) ->
             val experiment = incarnation to testType
             val simulation = loadYamlSimulation<Any?, Euclidean2DPosition>("yaml/$incarnation/$testType.yml")
 
-            simulation.environment.addTerminator(AfterTime(DoubleTime(10_000.0)))
+            simulation.environment.addTerminator(AfterTime(DoubleTime(100.0)))
             Thread.sleep(1000)
 
             val startTime = System.currentTimeMillis()
@@ -69,4 +71,16 @@ fun main() {
                 "Average:${averageStore.map { "\n$it" }}\n").toByteArray(),
         if (file.exists()) APPEND else CREATE,
     )
+    averageStore.toCSV(Paths.get(path.toString(), "results.csv").toString(), startedAt, finishedAt)
+}
+
+private fun Map<Pair<String,String>, Double>.toCSV(path: String, started: String, finished: String) {
+    val file = File(path)
+    val writer = BufferedWriter(FileWriter(file, file.exists()))
+
+    if(!file.exists()) writer.write("Incarnation,TestType,Average,StartTime,EndTime\n")
+    this.forEach { (key, entry) ->
+        writer.write("${key.first},${key.second},$entry,$started,$finished\n")
+    }
+    writer.close()
 }
