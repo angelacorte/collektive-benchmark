@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.bundles.alchemist)
     implementation(libs.bundles.collektive)
     implementation(libs.bundles.protelis)
+    implementation(libs.bundles.arrow)
     implementation(libs.scala)
     implementation(kotlin("reflect"))
     implementation(libs.caffeine)

@@ -1,6 +1,7 @@
 [versions]
 kotlin = "1.9.22"
 alchemist = "30.1.11"
+arrow = "1.2.0"
 collektive = "7.0.5"
 protelis = "17.3.16"
 scala = "2.13.12"
@@ -12,6 +13,8 @@ alchemist-incarnation-protelis = { module = "it.unibo.alchemist:alchemist-incarn
 alchemist-incarnation-scafi = { module = "it.unibo.alchemist:alchemist-incarnation-scafi", version.ref = "alchemist" }
 alchemist-swingui = { module = "it.unibo.alchemist:alchemist-swingui", version.ref = "alchemist" }
 alchemist-euclidean-geometry = { module = "it.unibo.alchemist:alchemist-euclidean-geometry", version.ref = "alchemist" }
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow"}
+arrow-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow"}
 collektive = { module = "it.unibo.collektive:dsl", version.ref = "collektive" }
 collektive-incarnation = { module = "it.unibo.collektive:alchemist-incarnation-collektive", version = "7.0.3" }
 protelis = { module = "org.protelis:protelis", version.ref = "protelis" }
@@ -22,6 +25,7 @@ caffeine = "com.github.ben-manes.caffeine:caffeine:3.1.8"
 
 [bundles]
 alchemist = ["alchemist", "alchemist-euclidean-geometry", "alchemist-incarnation-protelis", "alchemist-incarnation-scafi", "alchemist-swingui", "alchemist-test"]
+arrow = ["arrow-core", "arrow-coroutines"]
 collektive = ["collektive", "collektive-incarnation"]
 protelis = [ "protelis", "protelis-interpreter", "protelis-lang" ]
 
