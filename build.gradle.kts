@@ -41,13 +41,15 @@ val heap: Long = maxHeap ?: if (System.getProperty("os.name").lowercase().contai
 }
 val taskSizeFromProject: Int? by project
 val taskSize = taskSizeFromProject ?: 512
+val batchGroup = "Run Batch"
+val alchemistGroup = "Run Alchemist"
 val threadCount = maxOf(1, minOf(Runtime.getRuntime().availableProcessors(), heap.toInt() / taskSize))
 val runAllBatch by tasks.register<DefaultTask>("runAllBatch") {
-    group = "Run Batch"
+    group = batchGroup
     description = "Launches all experiments"
 }
 val runAllGraphic by tasks.register<DefaultTask>("runAllGraphic") {
-    group = "Run Alchemist"
+    group = alchemistGroup
     description = "Launches all simulations with the graphic subsystem enabled"
 }
 
@@ -81,6 +83,7 @@ incarnations.forEach { incarnation ->
             }
             val capitalizedName = (incarnation + it.nameWithoutExtension.capitalizeString()).capitalizeString()
             val graphic by basetask("run${capitalizedName}Graphic") {
+                group = alchemistGroup
                 args(
                     "--override",
                     "monitors: { type: SwingGUI, parameters: { graphics: effects/${it.nameWithoutExtension}.json } }",
@@ -90,6 +93,7 @@ incarnations.forEach { incarnation ->
             }
             runAllGraphic.dependsOn(graphic)
             val batch by basetask("run${capitalizedName}") {
+                group = batchGroup
                 description = "Launches batch experiments for $capitalizedName"
                 maxHeapSize = "${minOf(heap.toInt(), Runtime.getRuntime().availableProcessors() * taskSize)}m"
                 File("data").mkdirs()
