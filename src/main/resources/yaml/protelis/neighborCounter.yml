@@ -7,9 +7,8 @@ network-model:
 _gradient: &program
   - time-distribution: 1
     program: |
-      import protelis:coord:accumulation
       import protelis:coord:spreading
-      countDevices(distanceTo(env.has("source")))
+      neighborhood()
   - program: send
 
 deployments:
