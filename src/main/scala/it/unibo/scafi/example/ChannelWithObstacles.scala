@@ -9,7 +9,7 @@ class ChannelWithObstacles extends AggregateProgram with StandardSensors with Bl
     def channel(source: Boolean, target: Boolean, width: Double): Boolean = {
       distanceTo(source) + distanceTo(target) <= distanceBetween(source, target) + width
     }
-    val channelWidth = 1
+    val channelWidth = 0.5
     val inChannel = branch(obstacle){ false }{ channel(source, target, channelWidth) }
     inChannel
   }
