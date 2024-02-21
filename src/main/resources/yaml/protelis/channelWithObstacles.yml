@@ -12,7 +12,7 @@ _pool: &program
       if (env.has("obstacle")) {
         false
       } else {
-        channel2(env.has("source"), env.has("destination"), env.get("width"))
+        channelWithObstacle(env.has("source"), env.has("target"), env.get("width"))
       }
   - program: send
 
