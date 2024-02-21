@@ -7,7 +7,7 @@ import it.unibo.collektive.field.Field.Companion.hood
 
 context(LocalSensing)
 fun Aggregate<Int>.branching() =
-    if (sense("sensor")) {
+    if (sense("source")) {
         neighboringViaExchange(1).hood(0) { acc, _ -> acc + 1 }
     } else {
         0

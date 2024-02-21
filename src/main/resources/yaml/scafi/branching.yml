@@ -14,29 +14,16 @@ _pool: &program
 
 deployments:
   - type: Rectangle
-    parameters: [198, 0, 0, 20, 20]
+    parameters: [199, 0, 0, 20, 20]
     programs:
       - *program
     contents:
       - molecule: source
         concentration: false
-      - molecule: sensor
-        concentration: false
   - type: Point
-    parameters: [2, 2]
+    parameters: [10, 10]
     programs:
       - *program
     contents:
       - molecule: source
         concentration: true
-      - molecule: sensor
-        concentration: false
-  - type: Point
-    parameters: [4, 4]
-    programs:
-      - *program
-    contents:
-      - molecule: sensor
-        concentration: true
-      - molecule: source
-        concentration: false
