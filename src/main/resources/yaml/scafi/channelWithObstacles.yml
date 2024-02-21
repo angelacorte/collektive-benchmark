@@ -2,7 +2,7 @@ incarnation: scafi
 
 network-model:
   type: ConnectWithinDistance
-  parameters: [y7]
+  parameters: [7]
 
 _pool: &program
   - time-distribution: 1
