@@ -15,7 +15,7 @@ fun Aggregate<Int>.channelWithObstacles(): Any =
     if (sense("obstacle")) {
         false
     } else {
-        channel(sense("source"), sense("target"), channelWidth = 1.0)
+        channel(sense("source"), sense("target"), channelWidth = 0.3)
     }
 
 context(DistanceSensor)
