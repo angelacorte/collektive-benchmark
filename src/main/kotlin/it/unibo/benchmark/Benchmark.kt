@@ -15,6 +15,10 @@ import java.nio.file.StandardOpenOption.APPEND
 import java.nio.file.StandardOpenOption.CREATE
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import kotlin.io.path.Path
 
 const val checkPoints = 1000
@@ -25,40 +29,28 @@ fun main() {
     val filePath = Paths.get(path.toString(), "results.txt")
     val file = File(filePath.toString())
     if (!file.exists()) file.createNewFile()
-    val incarnations = listOf("collektive", "scafi", "protelis")
     val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
     val startedAt = LocalDateTime.now().format(formatter)
     val store: MutableMap<SimulationType, Results> = mutableMapOf()
+    val incarnations = listOf("collektive", "scafi", "protelis")
+    val tests = listOf("fieldEvolution", "neighborCounter", "branching", "gradient", "channelWithObstacles")
+        .flatMap { t -> incarnations.map { i -> i to t } }
 
-    listOf("fieldEvolution", "neighborCounter", "branching", "gradient").forEach { testType ->
-        for (i in 1 .. 3) { //16
-            incarnations.map { it to loadYamlSimulation<Any?, Euclidean2DPosition>("yaml/$it/$testType.yml")}
-                .forEach { (experiment, simulation) ->
-                    simulation.environment.addTerminator(AfterTime(DoubleTime(5_000.0)))
-                    Thread.sleep(1000)
-                    val startTime = System.currentTimeMillis()
-                    var nextCheckPoint = 0
-                    simulation.addOutputMonitor(object : OutputMonitor<Any?, Euclidean2DPosition> {
-                        override fun stepDone(
-                            environment: Environment<Any?, Euclidean2DPosition>,
-                            reaction: Actionable<Any?>?,
-                            time: it.unibo.alchemist.model.Time,
-                            step: Long,
-                        ) {
-                            val time = simulation.time.toDouble()
-                            if (time > nextCheckPoint) {
-                                println("$experiment for $testType #$i Simulation at $time after ${System.currentTimeMillis() - startTime}ms, performed $step steps")
-                                nextCheckPoint += checkPoints
-                            }
-                        }
-                    })
-                    simulation.startSimulation(steps = Long.MAX_VALUE)
-                    val endTime = System.currentTimeMillis()
-                    val duration = endTime - startTime
-                    println("Simulation $testType for $experiment took $duration ms")
-                    store[SimulationType(experiment, testType, i, simulation.environment.nodes.size)] =
-                        Results(duration, simulation.step)
-                }
+    repeat(1) { i ->
+        tests.map { (incarnation, testType) ->
+            val experiment = incarnation to testType
+            val simulation = loadYamlSimulation<Any?, Euclidean2DPosition>("yaml/$incarnation/$testType.yml")
+
+            simulation.environment.addTerminator(AfterTime(DoubleTime(10_000.0)))
+            Thread.sleep(1000)
+
+            val startTime = System.currentTimeMillis()
+            simulation.startSimulation(steps = Long.MAX_VALUE)
+            val endTime = System.currentTimeMillis()
+            val duration = endTime - startTime
+            println("Simulation $experiment took $duration ms")
+            store[SimulationType(experiment.first, experiment.second, i, simulation.environment.nodes.size)] =
+                Results(duration, simulation.step)
         }
     }
     val finishedAt = LocalDateTime.now().format(formatter)
@@ -73,7 +65,8 @@ fun main() {
     }
     Files.write(
         Paths.get(filePath.toString()),
-        ("Test started at: $startedAt - Finished at $finishedAt\nResults:${sortedStore.map { "\n$it" }}\nAverage:${averageStore.map { "\n$it" }}\n").toByteArray(),
+        ("Test started at: $startedAt - Finished at $finishedAt\nResults:${sortedStore.map { "\n$it" }}\n" +
+                "Average:${averageStore.map { "\n$it" }}\n").toByteArray(),
         if (file.exists()) APPEND else CREATE,
     )
 }
