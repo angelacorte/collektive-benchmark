@@ -7,13 +7,9 @@ network-model:
 _pool: &program
   - time-distribution: 1
     program: |
-      module protelis:channelWithObstacles
+      module protelis:channelWithObstacle
       import protelis:coord:spreading
-      if (env.has("obstacle")) {
-        false
-      } else {
-        channelWithObstacle(env.has("source"), env.has("target"), env.get("width"))
-      }
+      channelWithObstacle(env.get("source"), env.get("target"), env.get("obstacle"), 1.0)
   - program: send
 
 deployments:
@@ -40,17 +36,6 @@ deployments:
       - molecule: obstacle
         concentration: false
   - type: Point
-    parameters: [17, 17]
-    programs:
-      - *program
-    contents:
-      - molecule: target
-        concentration: true
-      - molecule: source
-        concentration: false
-      - molecule: obstacle
-        concentration: false
-  - type: Point
     parameters: [ 10, 10 ]
     programs:
       - *program
@@ -60,4 +45,15 @@ deployments:
       - molecule: source
         concentration: false
       - molecule: target
+        concentration: false
+  - type: Point
+    parameters: [17, 17]
+    programs:
+      - *program
+    contents:
+      - molecule: target
+        concentration: true
+      - molecule: source
+        concentration: false
+      - molecule: obstacle
         concentration: false

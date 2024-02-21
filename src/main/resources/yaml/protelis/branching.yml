@@ -7,9 +7,10 @@ network-model:
 _pool: &program
   - time-distribution: 1
     program: |
+      module protelis:branching
       import protelis:coord:accumulation
       import protelis:coord:spreading
-      if (env.has("source")) {
+      if (env.get("source")) {
         neighborhood()
       } else {
         0

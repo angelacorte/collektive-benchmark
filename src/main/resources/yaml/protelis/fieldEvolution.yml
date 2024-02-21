@@ -7,6 +7,7 @@ network-model:
 _gradient: &program
   - time-distribution: 1
     program: |
+      module protelis:fieldEvolution
       rep(counter <- 0) { counter + 1 }
   - program: send
 
