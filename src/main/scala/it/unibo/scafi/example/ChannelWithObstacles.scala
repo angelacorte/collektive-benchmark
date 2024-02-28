@@ -1,4 +1,5 @@
 package it.unibo.scafi.example
+
 import it.unibo.alchemist.model.scafi.ScafiIncarnationForAlchemist._
 
 class ChannelWithObstacles extends AggregateProgram with StandardSensors with BlockG {
