@@ -9,7 +9,7 @@ _pool: &program
     type: Event
     actions:
       - type: RunScafiProgram
-        parameters: [it.unibo.scafi.example.FieldEvolution, 5.0]
+        parameters: [it.unibo.scafi.example.FieldEvolution]
   - program: send
 
 deployments:
