@@ -2,7 +2,7 @@
 kotlin = "1.9.22"
 alchemist = "30.1.11"
 arrow = "1.2.0"
-collektive = "7.0.5"
+collektive = "9.0.0"
 protelis = "17.3.16"
 scala = "2.13.12"
 
@@ -16,7 +16,7 @@ alchemist-euclidean-geometry = { module = "it.unibo.alchemist:alchemist-euclidea
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow"}
 arrow-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow"}
 collektive = { module = "it.unibo.collektive:dsl", version.ref = "collektive" }
-collektive-incarnation = { module = "it.unibo.collektive:alchemist-incarnation-collektive", version = "7.0.3" }
+collektive-incarnation = { module = "it.unibo.collektive:alchemist-incarnation-collektive", version.ref = "collektive" }
 protelis = { module = "org.protelis:protelis", version.ref = "protelis" }
 protelis-interpreter = { module = "org.protelis:protelis-interpreter", version.ref = "protelis" }
 protelis-lang = { module = "org.protelis:protelis-lang", version.ref = "protelis" }
