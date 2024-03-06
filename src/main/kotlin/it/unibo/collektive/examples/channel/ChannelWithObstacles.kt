@@ -1,9 +1,9 @@
 package it.unibo.collektive.examples.channel
 
+import it.unibo.alchemist.collektive.device.DistanceSensor
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.operators.share
-import it.unibo.collektive.alchemist.device.sensors.DistanceSensor
-import it.unibo.collektive.alchemist.device.sensors.LocalSensing
+import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.examples.gradient.gradient
 import it.unibo.collektive.field.Field.Companion.fold
 import kotlin.Double.Companion.POSITIVE_INFINITY
@@ -11,12 +11,12 @@ import kotlin.Double.Companion.POSITIVE_INFINITY
 /**
  * Compute the channel between the source and the target with obstacles.
  */
-context(LocalSensing, DistanceSensor)
+context(EnvironmentVariables, DistanceSensor)
 fun Aggregate<Int>.channelWithObstacles(): Any =
-    if (sense("obstacle")) {
+    if (get("obstacle")) {
         false
     } else {
-        channel(sense("source"), sense("target"), channelWidth = 0.3)
+        channel(get("source"), get("target"), channelWidth = 0.3)
     }
 
 /**
